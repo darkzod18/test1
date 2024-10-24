@@ -63,24 +63,22 @@
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category');
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyEocTmj6DpuD7hGvY3rSMTRndQl-8fliFGivGix0i-gQowcQ3P-4-uMJayNh6ITZUc9A/exec?category=${category}';
+const urlParams = new URLSearchParams(window.location.search);
+const category = urlParams.get('category') || 'General'; // Default to 'General'
 
-    let flashcards = [];
-    let history = [];
-    let currentIndex = 0;
+const WEB_APP_URL = `https://script.google.com/macros/s/AKfycbyEocTmj6DpuD7hGvY3rSMTRndQl-8fliFGivGix0i-gQowcQ3P-4-uMJayNh6ITZUc9A/exec`;
 
-    // Fetch flashcards with the correct category from the URL
+let flashcards = [];
+let history = [];
+let currentIndex = 0; // Declare and initialize currentIndex properly
+
+// Fetch flashcards with the correct category from the URL
 async function fetchFlashcards() {
   try {
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category') || 'General'; // Get category from URL or default to 'General'
-    
-    const response = await fetch('${WEB_APP_URL}?category=${category}'); // Correct URL construction
+    const response = await fetch(`${WEB_APP_URL}?category=${category}`); // Fetch from web app
     const data = await response.json();
     
-    console.log('Fetched Data:', data); // Log fetched data
+    console.log('Fetched Data:', data); // Log the fetched data
 
     if (Array.isArray(data) && data.length > 1) {
       flashcards = data.slice(1); // Ignore header row
@@ -92,34 +90,39 @@ async function fetchFlashcards() {
     console.error('Error fetching flashcards:', error);
   }
 }
-    function showFlashcard(index) {
-      const [arabic, transliteration, english] = flashcards[index];
-      document.querySelector('.arabic').textContent = arabic;
-      document.querySelector('.transliteration').textContent = transliteration;
-      document.querySelector('.answer').textContent = english;
-      document.querySelector('.answer').style.visibility = 'hidden';
-    }
 
-    document.getElementById('revealBtn').addEventListener('click', () => {
-      document.querySelector('.answer').style.visibility = 'visible';
-    });
+// Show the flashcard at the given index
+function showFlashcard(index) {
+  const [arabic, transliteration, english] = flashcards[index];
+  document.querySelector('.arabic').textContent = arabic;
+  document.querySelector('.transliteration').textContent = transliteration;
+  document.querySelector('.answer').textContent = english;
+  document.querySelector('.answer').style.visibility = 'hidden';
+}
 
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      history.push(currentIndex);
-      currentIndex = Math.floor(Math.random() * flashcards.length);
-      showFlashcard(currentIndex);
-      document.getElementById('prevBtn').disabled = false;
-    });
+// Event listeners for buttons
+document.getElementById('revealBtn').addEventListener('click', () => {
+  document.querySelector('.answer').style.visibility = 'visible';
+});
 
-    document.getElementById('prevBtn').addEventListener('click', () => {
-      currentIndex = history.pop();
-      showFlashcard(currentIndex);
-      if (history.length === 0) {
-        document.getElementById('prevBtn').disabled = true;
-      }
-    });
+document.getElementById('nextBtn').addEventListener('click', () => {
+  history.push(currentIndex);
+  currentIndex = Math.floor(Math.random() * flashcards.length);
+  showFlashcard(currentIndex);
+  document.getElementById('prevBtn').disabled = false;
+});
 
-    fetchFlashcards();
+document.getElementById('prevBtn').addEventListener('click', () => {
+  currentIndex = history.pop();
+  showFlashcard(currentIndex);
+  if (history.length === 0) {
+    document.getElementById('prevBtn').disabled = true;
+  }
+});
+
+// Fetch flashcards when the page loads
+fetchFlashcards();
+
   </script>
 </body>
 </html>
