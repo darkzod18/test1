@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arabic-English Flashcards</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #FFDDC1, #F4BFBF, #FF677D);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    .white-box {
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .category {
+      margin: 15px 0;
+      font-size: 1.5rem;
+      background-color: #FF677D;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .category:hover {
+      background-color: #F4BFBF;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="white-box">
+      <h2>Select a Category</h2>
+      <div class="category" data-category="General">General</div>
+      <div class="category" data-category="Numbers">Numbers</div>
+      <div class="category" data-category="Time">Time</div>
+      <div class="category" data-category="Verbs">Verbs</div>
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyEocTmj6DpuD7hGvY3rSMTRndQl-8fliFGivGix0i-gQowcQ3P-4-uMJayNh6ITZUc9A/exec';
+
+    // Redirect to flashcard page with selected category
+    document.querySelectorAll('.category').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const category = e.target.dataset.category; // Get category from data attribute
+    window.location.href = 'flashcard.html?category=${category}'; // Correct URL format
+  });
+});
+  </script>
+</body>
+</html>
