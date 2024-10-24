@@ -56,11 +56,10 @@
   <script>
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyEocTmj6DpuD7hGvY3rSMTRndQl-8fliFGivGix0i-gQowcQ3P-4-uMJayNh6ITZUc9A/exec';
 
-    // Redirect to flashcard page with selected category
     document.querySelectorAll('.category').forEach(btn => {
   btn.addEventListener('click', (e) => {
     const category = e.target.dataset.category; // Get category from data attribute
-    window.location.href = 'flashcard.html?category=${category}'; // Correct URL format
+    window.location.href = `flashcard.html?category=${category}`; // Correct URL format
   });
 });
   </script>
