@@ -61,4 +61,13 @@
       background-color: #F4BFBF;
       cursor: not-allowed;
     }
+    p.arabic {
+	  font-size: xx-large;
+	  margin: 12px;
+	}
+	p.answer {
+	  font-size: 20px;
+      font-weight: bold;
+      color: #FF677D;
+	}
 
