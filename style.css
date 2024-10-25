@@ -1,0 +1,72 @@
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #FFDDC1, #F4BFBF, #FF677D);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    .white-box {
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .category {
+      margin: 15px 0;
+      font-size: 1.5rem;
+      background-color: #FF677D;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .category:hover {
+      background-color: #F4BFBF;
+    }
+    .flashcard {
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    button {
+      flex: 1;
+      padding: 15px;
+      font-size: 1rem;
+      background-color: #FF677D;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:disabled {
+      background-color: #F4BFBF;
+      cursor: not-allowed;
+    }
+	p.arabic {
+	  font-size: xx-large;
+	  margin: 12px;
+	}
+	p.answer {
+	  font-size: 20px;
+      font-weight: bold;
+      color: #FF677D;
+	}
