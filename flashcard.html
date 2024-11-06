@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="flashcard">
+      <p class="arabic"></p>
+      <p class="transliteration"></p>
+      <p class="answer" style="visibility:hidden;"></p>
+    </div>
+    <div class="buttons">
+      <button id="prevBtn" disabled>Previous</button>
+      <button id="revealBtn">Reveal</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+  <script>
+	const urlParams = new URLSearchParams(window.location.search);
+	const category = urlParams.get('category') || 'General'; // Default to 'General'
+
+	const WEB_APP_URL = `https://script.google.com/macros/s/AKfycbyEocTmj6DpuD7hGvY3rSMTRndQl-8fliFGivGix0i-gQowcQ3P-4-uMJayNh6ITZUc9A/exec`;
+
+	let flashcards = [];
+let shownIndices = []; // Track shown cards to prevent repetition
+let currentIndex = null; // Store the current card index
+
+// Fetch flashcards with the correct category from the URL
+async function fetchFlashcards() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || 'General'; // Get category from URL or default to 'General'
+
+    const response = await fetch(`${WEB_APP_URL}?category=${category}`);
+    const data = await response.json();
+    
+    console.log('Fetched Data:', data); // Log fetched data
+
+    if (Array.isArray(data) && data.length > 1) {
+      flashcards = data.slice(1); // Ignore header row
+      pickRandomCard(); // Start with a random card right away
+    } else {
+      console.error('Invalid data format or no data available:', data);
+    }
+  } catch (error) {
+    console.error('Error fetching flashcards:', error);
+  }
+}
+
+// Pick a random card ensuring no repeats in a cycle
+function pickRandomCard() {
+  if (shownIndices.length === flashcards.length) {
+    // All cards have been shown, reset the tracking array
+    shownIndices = [];
+  }
+
+  let randomIndex;
+  do {
+    randomIndex = Math.floor(Math.random() * flashcards.length);
+  } while (shownIndices.includes(randomIndex)); // Ensure no repetition in current cycle
+
+  shownIndices.push(randomIndex); // Track the shown index
+  currentIndex = randomIndex;
+  showFlashcard(currentIndex);
+}
+
+// Display the flashcard based on the index
+function showFlashcard(index) {
+  const [arabic, transliteration, english] = flashcards[index];
+  document.querySelector('.arabic').textContent = arabic;
+  document.querySelector('.transliteration').textContent = transliteration;
+  document.querySelector('.answer').textContent = english;
+  document.querySelector('.answer').style.visibility = 'hidden';
+}
+
+// Event listener for Reveal button
+document.getElementById('revealBtn').addEventListener('click', () => {
+  document.querySelector('.answer').style.visibility = 'visible';
+});
+
+// Event listener for Next button
+document.getElementById('nextBtn').addEventListener('click', () => {
+  pickRandomCard();
+  document.getElementById('prevBtn').disabled = shownIndices.length <= 1;
+});
+
+// Event listener for Previous button
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if (shownIndices.length > 1) {
+    shownIndices.pop(); // Remove the last shown index
+    currentIndex = shownIndices[shownIndices.length - 1]; // Get the previous index
+    showFlashcard(currentIndex);
+  }
+  document.getElementById('prevBtn').disabled = shownIndices.length <= 1;
+});
+
+// Fetch flashcards when the page loads
+fetchFlashcards();
+  </script>
+</body>
+</html>
